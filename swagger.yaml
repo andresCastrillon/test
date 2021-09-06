@@ -1,7 +1,7 @@
 # Documentacion de Facturas de proveedor
 openapi: 3.0.3
 info:
-  title: Expenses
+  title: Expenses Github
   description: Documentación de los endpoints concerniente a las facturas de proveedor
   version: "1.0.0"
 servers:
