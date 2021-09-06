@@ -1,0 +1,510 @@
+# Documentacion de Facturas de proveedor
+openapi: 3.0.3
+info:
+  title: Expenses
+  description: Documentación de los endpoints concerniente a las facturas de proveedor
+  version: "1.0.0"
+servers:
+  - url: https://api.alegra.com/api/v1
+    description: Production API server.
+tags:
+  - name: Facturas de venta
+    description: Documentación de Facturas de venta
+  - name: Notas crédito
+    description: Documentación de Notas crédito
+  - name: Pagos
+    description: Documentación de Pagos
+
+paths:
+  /invoices/{id}:
+    get:
+      tags:
+        - Facturas de venta
+      summary: Endpoint que permite consultar una factura de proveedor registrada en la aplicación, mediante su numeración interna
+      parameters:
+        - name: id
+          in: path
+          description: Id de la factura de proveedor que se desea consultar
+          required: true
+          schema:
+            type: integer
+        - name: fields
+          in: query
+          description: Incluye campos de la factura de proveedor que no se muestran en una consulta común, por ejemplo, los movimientos contables (journal) y los comentarios (comments)
+          schema:
+            type: string
+        - name: includeVoidPayments
+          in: query
+          description: Incluye los pagos anulados en el arreglo de pagos de la factura de proveedor
+          schema: 
+            type: string
+      responses:
+        200:
+          description: Se obtiene un objeto que describe una factura de proveedor
+          content:
+            application/json:
+                examples:
+                  bill-obtained:
+                    summary: Factura de proveedor simple
+                    value: {
+                      "id": "1",
+                      "date": "2019-02-21",
+                      "dueDate": "2019-02-21"
+                    }
+                schema:
+                  type: object
+                  items:
+                    $ref: '#/components/schemas/Dog'
+        404:
+          description: No se ha encontrado la factura de proveedor con el id especificado
+          content:
+            application/json:
+              example: { 
+                "error": "La factura de proveedor no se encuentra registrada en Alegra" ,
+                "code" : 404
+              }
+              schema:
+                type: object
+                items: 
+                  $ref: "#/components/schemas/GeneralError"
+  /bills/:
+    post:
+      tags:
+        - Facturas de venta
+      summary: Endpoint que permite consultar una factura de proveedor registrada en la aplicación, mediante su numeración interna
+      parameters:
+        - name: id
+          in: path
+          description: Id de la factura de proveedor que se desea consultar
+          required: true
+          schema:
+            type: integer
+        - name: fields
+          in: query
+          description: Incluye campos de la factura de proveedor que no se muestran en una consulta común, por ejemplo, los movimientos contables (journal) y los comentarios (comments)
+          schema:
+            type: string
+        - name: includeVoidPayments
+          in: query
+          description: Incluye los pagos anulados en el arreglo de pagos de la factura de proveedor
+          schema:
+            type: string
+      responses:
+        200:
+          description: Se obtiene un objeto que describe una factura de proveedor
+          content:
+            application/json:
+                examples:
+                  bill-obtained:
+                    summary: Factura de proveedor simple
+                    value: {
+                      "id": "1",
+                      "date": "2019-02-21",
+                      "dueDate": "2019-02-21"
+                    }
+                schema:
+                  type: object
+                  items:
+                    $ref: '#/components/schemas/Dog'
+        404:
+          description: No se ha encontrado la factura de proveedor con el id especificado
+          content:
+            application/json:
+              example: {
+                "error": "La factura de proveedor no se encuentra registrada en Alegra" ,
+                "code" : 404
+              }
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/GeneralError"
+  /debit-notes/{id}:
+    get:
+      tags:
+        - Notas crédito
+          Pagos
+      summary: Endpoint que permite consultar una factura de proveedor registrada en la aplicación, mediante su numeración interna
+      parameters:
+        - name: id
+          in: path
+          description: Id de la factura de proveedor que se desea consultar
+          required: true
+          schema:
+            type: integer
+        - name: fields
+          in: query
+          description: Incluye campos de la factura de proveedor que no se muestran en una consulta común, por ejemplo, los movimientos contables (journal) y los comentarios (comments)
+          schema:
+            type: string
+        - name: includeVoidPayments
+          in: query
+          description: Incluye los pagos anulados en el arreglo de pagos de la factura de proveedor
+          schema:
+            type: string
+      responses:
+        200:
+          description: Se obtiene un objeto que describe una factura de proveedor
+          content:
+            application/json:
+                examples:
+                  bill-obtained:
+                    summary: Factura de proveedor simple
+                    value: {
+                      "id": "1",
+                      "date": "2019-02-21",
+                      "dueDate": "2019-02-21",
+                      "observations": "Observaciones de la factura de proveedor.",
+                      "termsConditions": "Términos y condiciones de la factura de proveedor.",
+                      "status": "closed",
+                      "provider": {
+                        "id": "1",
+                        "name": "Coorporación Alegrate",
+                        "identification": "159.549.847",
+                        "phonePrimary": "999-99-99",
+                        "phoneSecondary": "",
+                        "fax": "",
+                        "mobile": "(333) 555-55-55",
+                        "email": "prueba@alegra.com"
+                      },
+                      "numberTemplate": {
+                        "number": "FPAPI1"
+                      },
+                      "total": 2100,
+                      "totalPaid": 2100,
+                      "balance": 0,
+                      "decimalPrecision": "2",
+                      "warehouse": {
+                        "id": "1",
+                        "name": "Principal"
+                      },
+                      "payments": [
+                        {
+                          "id": "1",
+                          "prefix": null,
+                          "number": "1",
+                          "date": "2019-02-21",
+                          "amount": 2100,
+                          "paymentMethod": "cash",
+                          "observations": "Observaciones del pago",
+                          "anotation": "Notas del pago",
+                          "status": "open"
+                        }
+                      ],
+                      "purchases": {
+                        "categories": [
+                          {
+                            "id": "1",
+                            "name": "Ajustes de inventario",
+                            "price": 2100,
+                            "discount": "0.00",
+                            "observations": "",
+                            "tax": null,
+                            "quantity": "1.00",
+                            "subtotal": 2100,
+                            "total": 2100
+                          }
+                        ]
+                      },
+                      "retentions": []
+                    }
+                  bill-journal:
+                    summary: Factura de proveedor con movimientos contables
+                    value: {
+                      "id": "1",
+                      "date": "2019-02-21",
+                      "dueDate": "2019-02-21",
+                      "observations": "Observaciones de la factura de proveedor.",
+                      "termsConditions": "Términos y condiciones de la factura de proveedor.",
+                      "status": "closed",
+                      "provider": {
+                        "id": "1",
+                        "name": "Coorporación Alegrate",
+                        "identification": "159.549.847",
+                        "phonePrimary": "999-99-99",
+                        "phoneSecondary": "",
+                        "fax": "",
+                        "mobile": "(333) 555-55-55",
+                        "email": "prueba@alegra.com"
+                      },
+                      "numberTemplate": {
+                        "number": "FPAPI1"
+                      },
+                      "total": 2100,
+                      "totalPaid": 2100,
+                      "balance": 0,
+                      "decimalPrecision": "2",
+                      "warehouse": {
+                        "id": "1",
+                        "name": "Principal"
+                      },
+                      "payments": [
+                        {
+                          "id": "1",
+                          "prefix": null,
+                          "number": "1",
+                          "date": "2019-02-21",
+                          "amount": 2100,
+                          "paymentMethod": "cash",
+                          "observations": "Observaciones del pago",
+                          "anotation": "Notas del pago",
+                          "status": "open"
+                        }
+                      ],
+                      "purchases": {
+                        "categories": [
+                          {
+                            "id": "1",
+                            "name": "Ajustes de inventario",
+                            "price": 2100,
+                            "discount": "0.00",
+                            "observations": "",
+                            "tax": null,
+                            "quantity": "1.00",
+                            "subtotal": 2100,
+                            "total": 2100
+                          }
+                        ]
+                      },
+                      "retentions": [],
+                      "journal": {"title":"Accounting journal","number":"FP-1","date":"2021-08-31","voided":0,"decimalPrecision":"3","totalDebit":105,"totalCredit":105,"categories":[{"id":"5011","name":"Impuesto a las ventas a favor IVA (5.00%) - Base: $100.000","code":null,"operation":"debit","amount":5,"client":{"id":"1","name":"Provider","identification":"999999999"},"costCenter":null},{"id":"5023","name":"Inventarios","code":null,"operation":"debit","amount":100,"client":{"id":"1","name":"Provider","identification":"999999999"},"costCenter":null},{"id":"5033","name":"Cuentas por pagar a proveedores ","code":null,"operation":"credit","amount":105,"client":{"id":"1","name":"Provider","identification":"999999999"},"costCenter":null}]}
+                    }
+                schema:
+                  type: object
+                  items:
+                    $ref: '#/components/schemas/Dog'
+        404:
+          description: No se ha encontrado la factura de proveedor con el id especificado
+          content:
+            application/json:
+              example: {
+                "error": "La factura de proveedor no se encuentra registrada en Alegra" ,
+                "code" : 404
+              }
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/GeneralError"
+  /transactions/{id}:
+    get:
+      tags:
+        - Pagos
+      summary: Endpoint que permite consultar una factura de proveedor registrada en la aplicación, mediante su numeración interna
+      parameters:
+        - name: id
+          in: path
+          description: Id de la factura de proveedor que se desea consultar
+          required: true
+          schema:
+            type: integer
+        - name: fields
+          in: query
+          description: Incluye campos de la factura de proveedor que no se muestran en una consulta común, por ejemplo, los movimientos contables (journal) y los comentarios (comments)
+          schema:
+            type: string
+        - name: includeVoidPayments
+          in: query
+          description: Incluye los pagos anulados en el arreglo de pagos de la factura de proveedor
+          schema:
+            type: string
+      responses:
+        200:
+          description: Se obtiene un objeto que describe una factura de proveedor
+          content:
+            application/json:
+                examples:
+                  bill-obtained:
+                    summary: Factura de proveedor simple
+                    value: {
+                      "id": "1",
+                      "date": "2019-02-21",
+                      "dueDate": "2019-02-21",
+                      "observations": "Observaciones de la factura de proveedor.",
+                      "termsConditions": "Términos y condiciones de la factura de proveedor.",
+                      "status": "closed",
+                      "provider": {
+                        "id": "1",
+                        "name": "Coorporación Alegrate",
+                        "identification": "159.549.847",
+                        "phonePrimary": "999-99-99",
+                        "phoneSecondary": "",
+                        "fax": "",
+                        "mobile": "(333) 555-55-55",
+                        "email": "prueba@alegra.com"
+                      },
+                      "numberTemplate": {
+                        "number": "FPAPI1"
+                      },
+                      "total": 2100,
+                      "totalPaid": 2100,
+                      "balance": 0,
+                      "decimalPrecision": "2",
+                      "warehouse": {
+                        "id": "1",
+                        "name": "Principal"
+                      },
+                      "payments": [
+                        {
+                          "id": "1",
+                          "prefix": null,
+                          "number": "1",
+                          "date": "2019-02-21",
+                          "amount": 2100,
+                          "paymentMethod": "cash",
+                          "observations": "Observaciones del pago",
+                          "anotation": "Notas del pago",
+                          "status": "open"
+                        }
+                      ],
+                      "purchases": {
+                        "categories": [
+                          {
+                            "id": "1",
+                            "name": "Ajustes de inventario",
+                            "price": 2100,
+                            "discount": "0.00",
+                            "observations": "",
+                            "tax": null,
+                            "quantity": "1.00",
+                            "subtotal": 2100,
+                            "total": 2100
+                          }
+                        ]
+                      },
+                      "retentions": []
+                    }
+                  bill-journal:
+                    summary: Factura de proveedor con movimientos contables
+                    value: {
+                      "id": "1",
+                      "date": "2019-02-21",
+                      "dueDate": "2019-02-21",
+                      "observations": "Observaciones de la factura de proveedor.",
+                      "termsConditions": "Términos y condiciones de la factura de proveedor.",
+                      "status": "closed",
+                      "provider": {
+                        "id": "1",
+                        "name": "Coorporación Alegrate",
+                        "identification": "159.549.847",
+                        "phonePrimary": "999-99-99",
+                        "phoneSecondary": "",
+                        "fax": "",
+                        "mobile": "(333) 555-55-55",
+                        "email": "prueba@alegra.com"
+                      },
+                      "numberTemplate": {
+                        "number": "FPAPI1"
+                      },
+                      "total": 2100,
+                      "totalPaid": 2100,
+                      "balance": 0,
+                      "decimalPrecision": "2",
+                      "warehouse": {
+                        "id": "1",
+                        "name": "Principal"
+                      },
+                      "payments": [
+                        {
+                          "id": "1",
+                          "prefix": null,
+                          "number": "1",
+                          "date": "2019-02-21",
+                          "amount": 2100,
+                          "paymentMethod": "cash",
+                          "observations": "Observaciones del pago",
+                          "anotation": "Notas del pago",
+                          "status": "open"
+                        }
+                      ],
+                      "purchases": {
+                        "categories": [
+                          {
+                            "id": "1",
+                            "name": "Ajustes de inventario",
+                            "price": 2100,
+                            "discount": "0.00",
+                            "observations": "",
+                            "tax": null,
+                            "quantity": "1.00",
+                            "subtotal": 2100,
+                            "total": 2100
+                          }
+                        ]
+                      },
+                      "retentions": [],
+                      "journal": {"title":"Accounting journal","number":"FP-1","date":"2021-08-31","voided":0,"decimalPrecision":"3","totalDebit":105,"totalCredit":105,"categories":[{"id":"5011","name":"Impuesto a las ventas a favor IVA (5.00%) - Base: $100.000","code":null,"operation":"debit","amount":5,"client":{"id":"1","name":"Provider","identification":"999999999"},"costCenter":null},{"id":"5023","name":"Inventarios","code":null,"operation":"debit","amount":100,"client":{"id":"1","name":"Provider","identification":"999999999"},"costCenter":null},{"id":"5033","name":"Cuentas por pagar a proveedores ","code":null,"operation":"credit","amount":105,"client":{"id":"1","name":"Provider","identification":"999999999"},"costCenter":null}]}
+                    }
+                schema:
+                  type: object
+                  items:
+                    $ref: '#/components/schemas/Dog'
+        404:
+          description: No se ha encontrado la factura de proveedor con el id especificado
+          content:
+            application/json:
+              example: {
+                "error": "La factura de proveedor no se encuentra registrada en Alegra" ,
+                "code" : 404
+              }
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/GeneralError"
+components:
+  schemas:
+    Pet:
+      type: object
+      discriminator:
+        propertyName: petType
+      properties:
+        name:
+          type: string
+        petType:
+          type: string
+      required:
+      - name
+      - petType
+    Cat:  ## "Cat" will be used as the discriminator value
+      description: A representation of a cat
+      allOf:
+      - $ref: '#/components/schemas/Pet'
+      - type: object
+        properties:
+          huntingSkill:
+            type: string
+            description: The measured skill for hunting
+            enum:
+            - clueless
+            - lazy
+            - adventurous
+            - aggressive
+        required:
+        - huntingSkill
+    Dog:  ## "Dog" will be used as the discriminator value
+      description: A representation of a dog
+      allOf:
+      - $ref: '#/components/schemas/Pet'
+      - type: object
+        properties:
+          packSize:
+            type: integer
+            format: int32
+            description: the size of the pack the dog is from
+            default: 0
+            minimum: 0
+        required:
+        - packSize
+    GeneralError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        error:
+          type: string
+ 
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+security:
+  - BasicAuth: []
